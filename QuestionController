@@ -1,0 +1,34 @@
+ public ActionResult QuestionsForQuiz(int id)
+        {
+            List<Question> questions = _apiRequest.GetAllForParentId(questionController, "QuestionsForQuizId", id);
+            return View("Index", questions);
+        }
+
+        // GET: QuestionController/Details/5
+        public ActionResult Details(int id)
+        {
+            Question question = _apiRequest.GetSingle(questionController, id);
+            return View(question);
+        }
+
+        // GET: QuestionController/Create
+        public ActionResult Create()
+        {
+            // Get a list of questions from the API
+            var quizzes = _apiQuizRequest.GetAll("Quiz");
+
+
+            var quizDropDownListModel = quizzes.Select(c => new SelectListItem
+            {
+                Text = c.Title,
+                Value = c.QuizId.ToString()
+            }).ToList();
+
+            ViewBag.QuizDropDown = quizDropDownListModel;
+
+            //ViewData.Add("quizDDL", quizDropDownListModel);
+
+            //TempData.Add("quizDDL", quizDropDownListModel);
+
+            return View();
+        }
