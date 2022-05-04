@@ -1,0 +1,20 @@
+  public class OptionController : Controller
+    {
+                 
+        private readonly IApiRequest<Option> _apiRequest;
+        private readonly IApiRequest<Question> _apiQuestionRequest;
+        private readonly string optionController = "Option";
+
+        public OptionController(IApiRequest<Option> apiRequest, IApiRequest<Question> apiQuestionRequest)
+        {
+            _apiRequest = apiRequest;
+            _apiQuestionRequest = apiQuestionRequest;
+        }
+
+
+        //GET: OptionController
+        public ActionResult Index()
+        {
+            List<Option> options = _apiRequest.GetAll(optionController);
+            return View(options);
+        }
