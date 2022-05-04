@@ -32,3 +32,22 @@
 
             return View();
         }
+         [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(Question question)
+        {
+            try
+            {
+                question.QuestionId = 0;
+
+                _apiRequest.Create("Question", question);
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        
