@@ -1,0 +1,64 @@
+@model IEnumerable<PerfectPolicyQuizFE2022.Models.QuestionModels.Question>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.QuestionId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Topic)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Text)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Image)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.QuizId)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.QuestionId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Topic)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Text)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Image)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.QuizId)
+            </td>
+
+            <td>
+                @Html.ActionLink("Option", "OptionsForQuestion", "Option", new { id = item.QuestionId }, new { @class = "btn btn-primary" }) |
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.QuestionId }) |
+                @Html.ActionLink("Details", "Details", new { id = item.QuestionId }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.QuestionId })
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
