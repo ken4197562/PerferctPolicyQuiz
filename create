@@ -1,0 +1,83 @@
+@model PerfectPolicyQuizFE2022.Models.QuestionModels.QuestionCreate
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>QuestionCreate</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Topic" class="control-label"></label>
+                <input asp-for="Topic" class="form-control" />
+                <span asp-validation-for="Topic" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Text" class="control-label"></label>
+                <input asp-for="Text" class="form-control" />
+                <span asp-validation-for="Text" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Image" class="control-label"></label>
+                <input asp-for="Image" class="form-control" />
+                <span asp-validation-for="Image" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="QuizId" class="control-label"></label>
+                <input asp-for="QuizId" class="form-control" />
+                <span asp-validation-for="QuizId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<div class="raw" >
+    @using (Html.BeginForm("UploadFile", "Question", FormMethod.Post, new { @class = "dropzone", @id = "dropzoneForm" }))
+    {
+        <div class="fallback">
+              <input name="file" type="file"  />
+</div>
+    }
+</div>
+
+
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+<script src="~/lib/dropzone/min/dropzone.min.js" ></script>  
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+<script type="text/javascript">
+    Dropzone.options.dropzoneForm = {
+        maxFiles: 1,
+        acceptedFiles:"image/*",
+        success: function (file, response) {
+            $("#Image").val(file.upload.filename)
+            console.log("Filename:" + file.upload.filename);
+            file.previewElement.classList.add("dz-success");
+
+        },
+        error: function (file, message) {
+            alert(message);
+
+        }
+    }
+
+
+</script>
