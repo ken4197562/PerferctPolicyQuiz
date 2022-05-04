@@ -18,3 +18,33 @@
             List<Option> options = _apiRequest.GetAll(optionController);
             return View(options);
         }
+  public ActionResult OptionsForQuestion(int id)
+        {
+            List<Option> options = _apiRequest.GetAllForParentId(optionController, "OptionsForQuestionId", id);
+            return View("index", options);
+        }
+
+        // GET: OptionController/Details/5
+        public ActionResult Details(int id)
+        {
+            Option option = _apiRequest.GetSingle(optionController, id);
+            return View(option);
+        }
+
+        // GET: OptionController/Create
+        public ActionResult Create()
+        {
+            var questions = _apiQuestionRequest.GetAll("Question");
+
+            var questionDropDownListModel = questions.Select(c => new SelectListItem
+            {
+                Text = c.Topic,
+                Value = c.QuestionId.ToString()
+            }).ToList();
+
+            ViewBag.QuestionDrowDown = questionDropDownListModel;
+            //ViewData.Add("questionDDL", questionDropDownListModel);
+            //TempData.Add("questionDDL", questionDropDownListModel);
+
+            return View();
+        }
