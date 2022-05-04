@@ -24,6 +24,7 @@ namespace PerfectPolicyQuizFE2022
                 opts.Cookie.HttpOnly = true;
                 opts.Cookie.IsEssential = true;
             });
+                 services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
           
         }
