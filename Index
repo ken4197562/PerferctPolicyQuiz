@@ -1,0 +1,88 @@
+@model IEnumerable<PerfectPolicyQuizFE2022.Models.QuizModels.Quiz>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using Microsoft.AspNetCore.Http;
+
+@{
+    ViewData["Title"] = "Index";
+    var inputName = " ";
+    var sessionKeys = Context.Session.Keys;
+
+    if (sessionKeys.Any(c => c.Equals("inputName")))
+    {
+        inputName = Context.Session.GetString("inputName");
+    }
+
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+
+</p>
+
+<label>All Quizzes for: </label> 
+ <label>@inputName</label>
+
+
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.QuizId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Topic)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.AuthorName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DateCreated)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PassPercentage)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.QuizId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Topic)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AuthorName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateCreated)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PassPercentage)
+                    </td>
+                    <td>
+
+                        @Html.ActionLink("Question", "index", "Question", new { id = item.QuizId }, new { @class = "btn btn-primary" }) |
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.QuizId }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.QuizId }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.QuizId })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
