@@ -1,0 +1,21 @@
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<div class="d-flex justify-content-center align-items-center" style="height: 76vh">
+
+    <form asp-action="FilterQuiz" asp-controller="Quiz">
+
+        <label>Entre your organizations name to continue:</label>
+        <br />
+        <input type="text" class="form-control" name="AuthorName" />
+        <br />
+        <input type="submit" class="btn btn-primary" value="Quizzes" />
+
+        @*@Html.ActionLink("Quizzes", "Index", "Quiz");*@
+
+    </form>
+
+
+
+
+
+</div>
