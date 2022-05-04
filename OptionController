@@ -1,0 +1,134 @@
+  public class OptionController : Controller
+    {
+                 
+        private readonly IApiRequest<Option> _apiRequest;
+        private readonly IApiRequest<Question> _apiQuestionRequest;
+        private readonly string optionController = "Option";
+
+        public OptionController(IApiRequest<Option> apiRequest, IApiRequest<Question> apiQuestionRequest)
+        {
+            _apiRequest = apiRequest;
+            _apiQuestionRequest = apiQuestionRequest;
+        }
+
+
+        //GET: OptionController
+        public ActionResult Index()
+        {
+            List<Option> options = _apiRequest.GetAll(optionController);
+            return View(options);
+        }
+  public ActionResult OptionsForQuestion(int id)
+        {
+            List<Option> options = _apiRequest.GetAllForParentId(optionController, "OptionsForQuestionId", id);
+            return View("index", options);
+        }
+
+        // GET: OptionController/Details/5
+        public ActionResult Details(int id)
+        {
+            Option option = _apiRequest.GetSingle(optionController, id);
+            return View(option);
+        }
+
+        // GET: OptionController/Create
+        public ActionResult Create()
+        {
+            var questions = _apiQuestionRequest.GetAll("Question");
+
+            var questionDropDownListModel = questions.Select(c => new SelectListItem
+            {
+                Text = c.Topic,
+                Value = c.QuestionId.ToString()
+            }).ToList();
+
+            ViewBag.QuestionDrowDown = questionDropDownListModel;
+            //ViewData.Add("questionDDL", questionDropDownListModel);
+            //TempData.Add("questionDDL", questionDropDownListModel);
+
+            return View();
+        }
+ // POST: OptionController/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(Option option)
+        {
+            try
+            {
+                option.OptionId = 0;
+                _apiRequest.Create("Option", option);
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        // GET: OptionController/Edit/5
+        public ActionResult Edit(int id)
+        {
+            if (!AuthenticationHelper.isAuthenticated(this.HttpContext))
+            {
+                return RedirectToAction("Login", "Auth");
+            }
+
+            Option option = _apiRequest.GetSingle(optionController, id);
+            return View(option);
+        }
+
+        // POST: OptionController/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(int id, Option option)
+        {
+            try
+            {
+                if (!AuthenticationHelper.isAuthenticated(this.HttpContext))
+                {
+                    return RedirectToAction("Login", "Auth");
+                }
+
+                _apiRequest.Edit(optionController, option, id);
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        // GET: OptionController/Delete/5
+        public ActionResult Delete(int id)
+        {
+            if (!AuthenticationHelper.isAuthenticated(this.HttpContext))
+            {
+                return RedirectToAction("Login", "Auth");
+            }
+
+            Option option = _apiRequest.GetSingle(optionController, id);
+            return View(option);
+        }
+
+        // POST: OptionController/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(int id, IFormCollection collection)
+        {
+            try
+            {
+                if (!AuthenticationHelper.isAuthenticated(this.HttpContext))
+                {
+                    return RedirectToAction("Login", "Auth");
+                }
+
+                _apiRequest.Delete(optionController, id);
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
+    }
+}
