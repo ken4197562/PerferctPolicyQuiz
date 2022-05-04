@@ -49,5 +49,100 @@
                 return View();
             }
         }
+  public ActionResult Edit(int id)
+        {
+            if (!AuthenticationHelper.isAuthenticated(this.HttpContext))
+            {
+                return RedirectToAction("Login", "Auth");
+            }
 
+            Question question = _apiRequest.GetSingle(questionController, id);
+            return View(question);
+        }
+
+        // POST: QuestionController/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(int id, Question question)
+        {
+            try
+            {
+                if (!AuthenticationHelper.isAuthenticated(this.HttpContext))
+                {
+                    return RedirectToAction("Login", "Auth");
+                }
+
+                _apiRequest.Edit(questionController, question, id);
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        // GET: QuestionController/Delete/5
+        public ActionResult Delete(int id)
+        {
+            if (!AuthenticationHelper.isAuthenticated(this.HttpContext))
+            {
+                return RedirectToAction("Login", "Auth");
+            }
+
+            Question question = _apiRequest.GetSingle(questionController, id);
+            return View(question);
+        }
+
+        // POST: QuestionController/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(int id, IFormCollection collection)
+        {
+            try
+            {
+                if (!AuthenticationHelper.isAuthenticated(this.HttpContext))
+                {
+                    return RedirectToAction("Login", "Auth");
+                }
+
+                _apiRequest.Delete(questionController, id);
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UploadFile (IFormFile file)
+        {
+            // retrive folder path
+            string folderRoot = Path.Combine(_environment.ContentRootPath, "wwwroot\\Uploads");
+
+
+            //combine filename and folder path
+
+            string filePath = Path.Combine(folderRoot, file.FileName);
+            //save the file
+           
+            using(var stream =new FileStream(filePath,FileMode.Create))
+                try
+            {
+                await file.CopyToAsync(stream);
+                return Ok(new { success = true, message = "File Uploaded" });
+            }
+
+            catch (Exception e)
+            {
+
+                return BadRequest(new { success = false, message = e.Message });
+            }
+        }
+
+
+
+
+    }
+}
         
